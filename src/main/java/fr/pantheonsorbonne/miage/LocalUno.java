@@ -209,7 +209,6 @@ public class LocalUno extends UnoEngine {
     
     /**
      * This function counts the number of cards of each color in a player's deck
-     * By default, the color red is returned if there are that many cards of each color
      * @param deck - The player's deck to check
      * @return the most present color in the deck
      */
@@ -226,20 +225,27 @@ public class LocalUno extends UnoEngine {
                 countColor[3] += 1;
             }
         }
+        // The red is predominant
         if (countColor[0] > countColor[1] && countColor[0] > countColor[2] && countColor[0] > countColor[3]){
             return "ROUGE";
+        // The yellow is predominant    
         } else if (countColor[1] > countColor[0] && countColor[1] > countColor[2] && countColor[1] > countColor[3]){
             return "JAUNE";
+        // The blue is predominant
         } else if (countColor[2] > countColor[0] && countColor[2] > countColor[1] && countColor[2] > countColor[3]){
             return "BLEU";
+        // The green is predominant
         } else if (countColor[3] > countColor[0] && countColor[3] > countColor[1] && countColor[3] > countColor[2]){
             return "VERT";
+        // No color is predominant
         } else {
+            // If the deck contains at least one colored card, we take the color of the first one encountered
             for (Card card : deck){
                 if (!(card.getColor().equals(""))){
                     return card.getColor();
                 }
             }
+            // In other cases, we keep the current color
             return currentColor;
         }
     }
@@ -373,7 +379,7 @@ public class LocalUno extends UnoEngine {
             // If the current player's last card is the MIROIR card, he may place it
             if (allPlayers.get(currentPlayer).size() == 1 && allPlayers.get(currentPlayer).get(0).getValue() == 16){
                 placeACard(0, allPlayers.get(currentPlayer));
-            // In all other cases, the player attempts to play
+            // In other cases, the player attempts to play
             } else {
                 ArrayList<Card> possibility = new ArrayList<>();
                 for (Card card : allPlayers.get(currentPlayer)){
