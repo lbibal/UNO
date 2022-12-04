@@ -216,15 +216,32 @@ public class LocalUno extends UnoEngine {
     public String countCardWithColor(ArrayList<Card> deck){
         int[] countColor = {0,0,0,0};
         for (Card card : deck){ 
-            if (card.color.equals("ROUGE")){countColor[0] += 1;}
-            else if (card.color.equals("JAUNE")){countColor[1] += 1;}
-            else if (card.color.equals("BLEU")){countColor[2] += 1;}
-            else if (card.color.equals("VERT")){countColor[3] += 1;}
+            if (card.color.equals("ROUGE")){
+                countColor[0] += 1;
+            } else if (card.color.equals("JAUNE")){
+                countColor[1] += 1;
+            } else if (card.color.equals("BLEU")){
+                countColor[2] += 1;
+            } else if (card.color.equals("VERT")){
+                countColor[3] += 1;
+            }
         }
-        if (countColor[0] >= countColor[1] && countColor[0] >= countColor[2] && countColor[0] >= countColor[3]){return "ROUGE";}
-        else if (countColor[1] >= countColor[0] && countColor[1] >= countColor[2] && countColor[1] >= countColor[3]){return "JAUNE";} 
-        else if (countColor[2] >= countColor[0] && countColor[2] >= countColor[1] && countColor[2] >= countColor[3]){return "BLEU";}
-        else {return "VERT";}
+        if (countColor[0] > countColor[1] && countColor[0] > countColor[2] && countColor[0] > countColor[3]){
+            return "ROUGE";
+        } else if (countColor[1] > countColor[0] && countColor[1] > countColor[2] && countColor[1] > countColor[3]){
+            return "JAUNE";
+        } else if (countColor[2] > countColor[0] && countColor[2] > countColor[1] && countColor[2] > countColor[3]){
+            return "BLEU";
+        } else if (countColor[3] > countColor[0] && countColor[3] > countColor[1] && countColor[3] > countColor[2]){
+            return "VERT";
+        } else {
+            for (Card card : deck){
+                if (!(card.color.equals(""))){
+                    return card.color;
+                }
+            }
+            return currentColor;
+        }
     }
 
     
@@ -400,7 +417,9 @@ public class LocalUno extends UnoEngine {
         System.out.println("Il s'agit de la carte "+placedCards.get(0).getFace()+".");
         currentColor = placedCards.get(0).color;
         currentValue = placedCards.get(0).value;
-        if (currentValue == 14){
+        if (currentValue == 11){
+            currentPlayer = numberPlayers;
+        } else if (currentValue == 14){
             currentColor = countCardWithColor(deckPlayer1);
             System.out.println("Joueur 1 choisit alors la couleur "+currentColor+".");
         }

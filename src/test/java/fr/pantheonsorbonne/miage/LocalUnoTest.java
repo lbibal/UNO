@@ -21,10 +21,12 @@ public class LocalUnoTest extends LocalUno{
         Cards deck1 = new Cards();
         deck1.initCards();
         unoTest1.deckParty.addAll(deck1.setCards);
+        assertEquals(116,unoTest1.deckParty.size());
         unoTest1.addCardDeck(unoTest1.deckPlayer1);
         unoTest1.addCardDeck(unoTest1.deckPlayer2);
         assertEquals(7,unoTest1.deckPlayer1.size());
         assertEquals(7,unoTest1.deckPlayer2.size());
+        assertEquals(102,unoTest1.deckParty.size());
     }
 
     @Test
@@ -36,6 +38,7 @@ public class LocalUnoTest extends LocalUno{
         unoTest2.addCardDeck(unoTest2.deckPlayer1);
         unoTest2.addCardDeck(unoTest2.deckPlayer2);
         unoTest2.initDrawPile(2);
+        assertEquals(102,unoTest2.drawPile.size());
         unoTest2.draw(2,unoTest2.deckPlayer1);
         assertEquals(9,unoTest2.deckPlayer1.size());
         assertEquals(100,unoTest2.drawPile.size());
@@ -55,6 +58,7 @@ public class LocalUnoTest extends LocalUno{
         for (Map.Entry<Integer, ArrayList<Card>> entry : unoTest3.allPlayers.entrySet()) {
             assertEquals(7,entry.getValue().size());
         }
+        assertEquals(46,unoTest3.deckParty.size());
     }
 
     @Test
@@ -93,7 +97,6 @@ public class LocalUnoTest extends LocalUno{
         assertEquals(true,unoTest6.canBePlaced("ROUGE",5));
         unoTest6.currentValue = 5;
         assertEquals(true,unoTest6.canBePlaced("JAUNE",5));
-        unoTest6.currentValue = 16;
         assertEquals(true,unoTest6.canBePlaced("",14));
         assertEquals(false,unoTest6.canBePlaced("VERT",0));
     } 
@@ -128,6 +131,10 @@ public class LocalUnoTest extends LocalUno{
         deck2.add(new Card(1,"ROUGE"));
         deck2.add(new Card(1,"JAUNE"));
         assertEquals("ROUGE",unoTest8.countCardWithColor(deck2));
+        ArrayList<Card> deck3 = new ArrayList<>();
+        deck3.add(new Card(0,"BLEU"));
+        deck3.add(new Card(0,"JAUNE"));
+        assertEquals("BLEU",unoTest8.countCardWithColor(deck3));
     }
 
     @Test
@@ -227,6 +234,114 @@ public class LocalUnoTest extends LocalUno{
         unoTest13.reverse = false;
         unoTest13.nextPlayer(4);
         assertEquals(4,unoTest13.currentPlayer);
+    }
+    
+    @Test
+    public void strategyTest(){
+
+        // Case tested : Player 1 plays a +2 card and player 2 counters with a MIROIR card
+        // Thereby, player 1 draws 2 cards
+        LocalUno unoTest14 = new LocalUno(); 
+        ArrayList<Card> deck1 = new ArrayList<>();
+        unoTest14.allPlayers.put(1,deck1);
+        ArrayList<Card> deck2 = new ArrayList<>();
+        unoTest14.allPlayers.put(2,deck2);
+        unoTest14.drawPile.add(new Card(0,"ROUGE"));
+        unoTest14.drawPile.add(new Card(1,"BLEU"));
+        unoTest14.drawPile.add(new Card(2,"JAUNE"));
+        unoTest14.drawPile.add(new Card(3,"VERT"));
+        unoTest14.drawPile.add(new Card(4,"ROUGE"));
+        unoTest14.drawPile.add(new Card(5,"BLEU"));
+        deck1.add(new Card(0,"VERT"));
+        deck1.add(new Card(1,"JAUNE"));
+        deck2.add(new Card(16,""));
+        unoTest14.lastPlayer = 1;
+        unoTest14.currentPlayer = 2;
+        unoTest14.currentColor = "ROUGE";
+        unoTest14.currentValue = 12;
+        unoTest14.mustPass = true;
+        unoTest14.strategy();
+        assertEquals(4,unoTest14.drawPile.size());
+        assertEquals(4,deck1.size());
+        assertEquals(0,deck2.size());
+        assertEquals("ROUGE",unoTest14.currentColor);
+        assertEquals(16,unoTest14.currentValue);
+
+        deck1.clear();
+        deck2.clear();
+
+        // Case tested : Player 1 plays a +4 card and player 2 hasn't a MIROIR card
+        // Thereby, player 2 draws 4 cards
+        deck1.add(new Card(0,"VERT"));
+        deck2.add(new Card(1,"JAUNE"));
+        deck2.add(new Card(2,"BLEU"));
+        unoTest14.lastPlayer = 1;
+        unoTest14.currentPlayer = 2;
+        unoTest14.currentColor = "";
+        unoTest14.currentValue = 15;
+        unoTest14.mustPass = true;
+        unoTest14.strategy();
+        assertEquals(0,unoTest14.drawPile.size());
+        assertEquals(1,deck1.size());
+        assertEquals(6,deck2.size());
+        
+        deck1.clear();
+        deck2.clear();
+
+        // Case tested : Player 2 only has the MIROIR card left
+        deck2.add(new Card(16,""));
+        unoTest14.lastPlayer = 1;
+        unoTest14.currentPlayer = 2;
+        unoTest14.currentColor = "ROUGE";
+        unoTest14.currentValue = 7;
+        unoTest14.strategy();
+        assertEquals(0,deck2.size());
+
+        deck1.clear();
+        deck2.clear();
+
+        // Case tested : Player 1 plays the 7 VERT card and player 2 plays the 7 JAUNE card
+        deck2.add(new Card(7,"JAUNE"));
+        unoTest14.lastPlayer = 1;
+        unoTest14.currentPlayer = 2;
+        unoTest14.currentColor = "VERT";
+        unoTest14.currentValue = 7;
+        unoTest14.strategy();
+        assertEquals(0,deck2.size());
+        assertEquals("JAUNE",unoTest14.currentColor);
+        assertEquals(7,unoTest14.currentValue);
+
+        deck1.clear();
+        deck2.clear();
+
+        // Case tested : Player 2 cannot play, draws and plays the drawn card
+        deck2.add(new Card(8,"VERT"));
+        unoTest14.drawPile.add(new Card(9,"JAUNE"));
+        unoTest14.lastPlayer = 1;
+        unoTest14.currentPlayer = 2;
+        unoTest14.currentColor = "JAUNE";
+        unoTest14.currentValue = 7;
+        unoTest14.strategy();
+        assertEquals(0,unoTest14.drawPile.size());
+        assertEquals(1,deck2.size());
+        assertEquals("JAUNE",unoTest14.currentColor);
+        assertEquals(9,unoTest14.currentValue);
+
+        deck1.clear();
+        deck2.clear();
+
+        // Case tested : Player 2 cannot play, draws and keeps the drawn card
+        deck2.add(new Card(8,"VERT"));
+        unoTest14.drawPile.add(new Card(1,"ROUGE"));
+        unoTest14.lastPlayer = 1;
+        unoTest14.currentPlayer = 2;
+        unoTest14.currentColor = "JAUNE";
+        unoTest14.currentValue = 7;
+        unoTest14.strategy();
+        assertEquals(0,unoTest14.drawPile.size());
+        assertEquals(2,deck2.size());
+        assertEquals("JAUNE",unoTest14.currentColor);
+        assertEquals(7,unoTest14.currentValue);        
     }
     
 }
