@@ -120,21 +120,29 @@ public class LocalUnoTest extends LocalUno{
     @Test
     public void countCardWithColorTest(){
         LocalUno unoTest8 = new LocalUno();
+        // Case tested : One color is majority
         ArrayList<Card> deck1 = new ArrayList<>();
         deck1.add(new Card(0,"VERT"));
         deck1.add(new Card(0,"JAUNE"));
         deck1.add(new Card(1,"JAUNE"));
         assertEquals("JAUNE",unoTest8.countCardWithColor(deck1));
+        // Case tested : One color is majority, with no-color cards
         ArrayList<Card> deck2 = new ArrayList<>();
         deck2.add(new Card(0,"ROUGE"));
-        deck2.add(new Card(0,"JAUNE"));
+        deck2.add(new Card(16,""));
         deck2.add(new Card(1,"ROUGE"));
         deck2.add(new Card(1,"JAUNE"));
         assertEquals("ROUGE",unoTest8.countCardWithColor(deck2));
+        // Case tested : Equality in the presence of colors
         ArrayList<Card> deck3 = new ArrayList<>();
         deck3.add(new Card(0,"BLEU"));
         deck3.add(new Card(0,"JAUNE"));
         assertEquals("BLEU",unoTest8.countCardWithColor(deck3));
+        // Cas tested : Only cards without colors
+        ArrayList<Card> deck4 = new ArrayList<>();
+        unoTest8.currentColor = "VERT";
+        deck4.add(new Card(16,""));
+        assertEquals("VERT",unoTest8.countCardWithColor(deck4));
     }
 
     @Test
