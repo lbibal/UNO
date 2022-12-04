@@ -4,12 +4,16 @@ import java.util.ArrayList;
 
 public class Cards {
 
-    private static String[] colors = {"BLEU","VERT","ROUGE","JAUNE"};
-    public ArrayList<Card> setCards = new ArrayList<Card>();
+    private static final String[] COLORS = {"BLEU","VERT","ROUGE","JAUNE"};
+    private ArrayList<Card> setCards = new ArrayList<Card>();
+
+    public ArrayList<Card> getSetCards(){
+        return this.setCards;
+    }
 
     public void initCards(){
         int index = 0;
-        for (String color : colors){
+        for (String color : COLORS){
             setCards.add(index, new Card(0,color));
             index++;
             setCards.add(index, new Card(13,color));

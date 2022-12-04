@@ -14,7 +14,7 @@ public class CardsTest{
     public void initCardsTest(){
         Cards deck = new Cards();
         deck.initCards();
-        assertEquals(116,deck.setCards.size());
+        assertEquals(116,deck.getSetCards().size());
     }
 
 }

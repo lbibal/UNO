@@ -2,14 +2,22 @@ package fr.pantheonsorbonne.miage.game;
 
 public class Card{
 
-    public int value;
-    public String color;
+    private int value;
+    private String color;
 
     public Card(int v, String c){
         value = v;
         color = c;
     }
     
+    public int getValue(){
+        return this.value;
+    }
+
+    public String getColor(){
+        return this.color;
+    }
+
     public String getFace(){
         String face = "";
         switch(this.value){
@@ -35,4 +43,5 @@ public class Card{
         }
         return face;
     }
+    
 }

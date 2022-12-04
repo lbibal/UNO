@@ -147,7 +147,7 @@ public class LocalUno extends UnoEngine {
         for (int i = 0; i < (116-numberPlayers*7); i++){
             int index = rand.nextInt(deckParty.size());
             if (i == 0){
-                while (deckParty.get(index).value == 13 || deckParty.get(index).value == 15 || deckParty.get(index).value == 16){
+                while (deckParty.get(index).getValue() == 13 || deckParty.get(index).getValue() == 15 || deckParty.get(index).getValue() == 16){
                     index = rand.nextInt(deckParty.size());
                 }
             }
@@ -216,13 +216,13 @@ public class LocalUno extends UnoEngine {
     public String countCardWithColor(ArrayList<Card> deck){
         int[] countColor = {0,0,0,0};
         for (Card card : deck){ 
-            if (card.color.equals("ROUGE")){
+            if (card.getColor().equals("ROUGE")){
                 countColor[0] += 1;
-            } else if (card.color.equals("JAUNE")){
+            } else if (card.getColor().equals("JAUNE")){
                 countColor[1] += 1;
-            } else if (card.color.equals("BLEU")){
+            } else if (card.getColor().equals("BLEU")){
                 countColor[2] += 1;
-            } else if (card.color.equals("VERT")){
+            } else if (card.getColor().equals("VERT")){
                 countColor[3] += 1;
             }
         }
@@ -236,8 +236,8 @@ public class LocalUno extends UnoEngine {
             return "VERT";
         } else {
             for (Card card : deck){
-                if (!(card.color.equals(""))){
-                    return card.color;
+                if (!(card.getColor().equals(""))){
+                    return card.getColor();
                 }
             }
             return currentColor;
@@ -253,10 +253,10 @@ public class LocalUno extends UnoEngine {
      */
     public void placeACard(int index, ArrayList<Card> deck){
         // If the card to be placed is the MIROIR card, the current color is not changed
-        if (deck.get(index).value != 16){
-            currentColor = deck.get(index).color;
+        if (deck.get(index).getValue() != 16){
+            currentColor = deck.get(index).getColor();
         }
-        currentValue = deck.get(index).value;
+        currentValue = deck.get(index).getValue();
         placedCards.add(deck.get(index));
         System.out.println("Joueur "+currentPlayer+" joue la carte "+deck.get(index).getFace()+".");
         allPlayers.get(currentPlayer).remove(deck.get(index));
@@ -266,8 +266,8 @@ public class LocalUno extends UnoEngine {
             ArrayList<Card> poseTout2 = new ArrayList<>();
             // If ever the player has a +2 card of the corresponding color, we make sure that he places it last so that the sanction applies to the next player
             for (Card card : allPlayers.get(currentPlayer)){
-                if (card.color.equals(currentColor)){
-                    if (card.value != 12){
+                if (card.getColor().equals(currentColor)){
+                    if (card.getValue() != 12){
                         poseTout.add(card);
                     } else {
                         poseTout2.add(card);
@@ -281,7 +281,7 @@ public class LocalUno extends UnoEngine {
             }
             if (!(poseTout.isEmpty())){
                 for (Card card : poseTout){
-                    currentValue = card.value;
+                    currentValue = card.getValue();
                     placedCards.add(card);
                     System.out.println("Joueur "+currentPlayer+" joue la carte "+card.getFace()+".");
                     allPlayers.get(currentPlayer).remove(card);
@@ -347,7 +347,7 @@ public class LocalUno extends UnoEngine {
             // we check if the current player has a MIRROR card
             ArrayList<Card> returnPenalty = new ArrayList<>();
             for (Card card : allPlayers.get(currentPlayer)){
-                if (card.value == 16){
+                if (card.getValue() == 16){
                     returnPenalty.add(card);
                 }
             }
@@ -371,13 +371,13 @@ public class LocalUno extends UnoEngine {
         // If the two previous cases are not verified, the current player plays
         } else {
             // If the current player's last card is the MIROIR card, he may place it
-            if (allPlayers.get(currentPlayer).size() == 1 && allPlayers.get(currentPlayer).get(0).value == 16){
+            if (allPlayers.get(currentPlayer).size() == 1 && allPlayers.get(currentPlayer).get(0).getValue() == 16){
                 placeACard(0, allPlayers.get(currentPlayer));
             // In all other cases, the player attempts to play
             } else {
                 ArrayList<Card> possibility = new ArrayList<>();
                 for (Card card : allPlayers.get(currentPlayer)){
-                    if (canBePlaced(card.color, card.value)){
+                    if (canBePlaced(card.getColor(), card.getValue())){
                         possibility.add(card);
                     }
                 }
@@ -387,7 +387,7 @@ public class LocalUno extends UnoEngine {
                 } else {
                     allPlayers.get(currentPlayer).add(drawPile.get(0));
                     System.out.println("Joueur "+currentPlayer+" pioche 1 carte.");
-                    if (canBePlaced(drawPile.get(0).color, drawPile.get(0).value)){
+                    if (canBePlaced(drawPile.get(0).getColor(), drawPile.get(0).getValue())){
                         placeACard(allPlayers.get(currentPlayer).size()-1, allPlayers.get(currentPlayer));
                     }
                     drawPile.remove(drawPile.get(0));
@@ -405,7 +405,7 @@ public class LocalUno extends UnoEngine {
         // Initialization phase
         Cards cards = new Cards();
         cards.initCards();
-        deckParty.addAll(cards.setCards);
+        deckParty.addAll(cards.getSetCards());
         int numberPlayers = numberOfLocalPlayers();
         System.out.println("L'hôte distribue 7 cartes à chacun des "+numberPlayers+" joueurs.");
         initAllPlayersAndDecks(numberPlayers);
@@ -415,8 +415,8 @@ public class LocalUno extends UnoEngine {
         placedCards.add(drawPile.get(0));
         drawPile.remove(drawPile.get(0));
         System.out.println("Il s'agit de la carte "+placedCards.get(0).getFace()+".");
-        currentColor = placedCards.get(0).color;
-        currentValue = placedCards.get(0).value;
+        currentColor = placedCards.get(0).getColor();
+        currentValue = placedCards.get(0).getValue();
         if (currentValue == 11){
             currentPlayer = numberPlayers;
         } else if (currentValue == 14){

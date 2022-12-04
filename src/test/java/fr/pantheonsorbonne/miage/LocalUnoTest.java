@@ -20,7 +20,7 @@ public class LocalUnoTest extends LocalUno{
         LocalUno unoTest1 = new LocalUno();
         Cards deck1 = new Cards();
         deck1.initCards();
-        unoTest1.deckParty.addAll(deck1.setCards);
+        unoTest1.deckParty.addAll(deck1.getSetCards());
         assertEquals(116,unoTest1.deckParty.size());
         unoTest1.addCardDeck(unoTest1.deckPlayer1);
         unoTest1.addCardDeck(unoTest1.deckPlayer2);
@@ -34,7 +34,7 @@ public class LocalUnoTest extends LocalUno{
         LocalUno unoTest2 = new LocalUno();
         Cards deck2 = new Cards();
         deck2.initCards();
-        unoTest2.deckParty.addAll(deck2.setCards);
+        unoTest2.deckParty.addAll(deck2.getSetCards());
         unoTest2.addCardDeck(unoTest2.deckPlayer1);
         unoTest2.addCardDeck(unoTest2.deckPlayer2);
         unoTest2.initDrawPile(2);
@@ -52,7 +52,7 @@ public class LocalUnoTest extends LocalUno{
         LocalUno unoTest3 = new LocalUno();
         Cards deck3 = new Cards();
         deck3.initCards();
-        unoTest3.deckParty.addAll(deck3.setCards);
+        unoTest3.deckParty.addAll(deck3.getSetCards());
         unoTest3.initAllPlayersAndDecks(10);
         assertEquals(10,unoTest3.allPlayers.size());
         for (Map.Entry<Integer, ArrayList<Card>> entry : unoTest3.allPlayers.entrySet()) {
@@ -66,13 +66,13 @@ public class LocalUnoTest extends LocalUno{
         LocalUno unoTest4 = new LocalUno();
         Cards deck4 = new Cards();
         deck4.initCards();
-        unoTest4.deckParty.addAll(deck4.setCards);
+        unoTest4.deckParty.addAll(deck4.getSetCards());
         unoTest4.initDrawPile(2);
         assertEquals(102,unoTest4.drawPile.size());
         Card first = unoTest4.drawPile.get(0);
-        assertEquals(false,first.value == 13);
-        assertEquals(false,first.value == 15);
-        assertEquals(false,first.value == 16);
+        assertEquals(false,first.getValue() == 13);
+        assertEquals(false,first.getValue() == 15);
+        assertEquals(false,first.getValue() == 16);
     } 
 
     @Test
@@ -80,7 +80,7 @@ public class LocalUnoTest extends LocalUno{
         LocalUno unoTest5 = new LocalUno();
         Cards deck5 = new Cards();
         deck5.initCards();
-        unoTest5.placedCards.addAll(deck5.setCards);
+        unoTest5.placedCards.addAll(deck5.getSetCards());
         assertEquals(116,unoTest5.placedCards.size());
         assertEquals("MIROIR",unoTest5.placedCards.get(unoTest5.placedCards.size()-1).getFace());
         unoTest5.resetDrawPile();
@@ -106,7 +106,7 @@ public class LocalUnoTest extends LocalUno{
         LocalUno unoTest7 = new LocalUno();
         Cards deck7 = new Cards();
         deck7.initCards();
-        unoTest7.deckParty.addAll(deck7.setCards);
+        unoTest7.deckParty.addAll(deck7.getSetCards());
         unoTest7.initAllPlayersAndDecks(2);
         unoTest7.initDrawPile(2);
         unoTest7.currentValue = 12;

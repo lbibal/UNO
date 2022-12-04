@@ -16,6 +16,22 @@ public class CardTest{
     private static String YELLOW = "JAUNE";
     
     @Test
+    public void getValueTest(){
+        Card a = new Card(0,BLUE);
+        assertEquals(0,a.getValue());
+        Card b = new Card(13,RED);
+        assertEquals(13,b.getValue());
+    }
+
+    @Test
+    public void getStringTest(){
+        Card a = new Card(0,BLUE);
+        assertEquals("BLEU",a.getColor());
+        Card b = new Card(13,RED);
+        assertEquals("ROUGE",b.getColor());
+    }
+
+    @Test
     public void getFaceTest(){
         Card a = new Card(0,BLUE);
         assertEquals("0 BLEU",a.getFace());
