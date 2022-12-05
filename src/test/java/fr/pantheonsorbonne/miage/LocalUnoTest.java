@@ -93,12 +93,12 @@ public class LocalUnoTest extends LocalUno{
     public void canBePlacedTest(){
         LocalUno unoTest6 = new LocalUno();
         unoTest6.currentColor = "ROUGE";
-        assertEquals(false,unoTest6.canBePlaced("ROUGE",16));
-        assertEquals(true,unoTest6.canBePlaced("ROUGE",5));
+        assertEquals(false,unoTest6.canBePlaced(new Card(16,"ROUGE")));
+        assertEquals(true,unoTest6.canBePlaced(new Card(5,"ROUGE")));
         unoTest6.currentValue = 5;
-        assertEquals(true,unoTest6.canBePlaced("JAUNE",5));
-        assertEquals(true,unoTest6.canBePlaced("",14));
-        assertEquals(false,unoTest6.canBePlaced("VERT",0));
+        assertEquals(true,unoTest6.canBePlaced(new Card(5,"JAUNE")));
+        assertEquals(true,unoTest6.canBePlaced(new Card(14,"")));
+        assertEquals(false,unoTest6.canBePlaced(new Card(0,"VERT")));
     } 
 
     @Test

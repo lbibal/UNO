@@ -6,7 +6,7 @@ import java.util.*;
 /**
  * This class implements the UNO game locally
  */
-public class LocalUno extends UnoEngine {
+public class LocalUno {
 
     // All attributes are protected in order to perform the tests in the LocalUnoTest class
     protected ArrayList<Card> deckParty = new ArrayList<>();
@@ -180,12 +180,11 @@ public class LocalUno extends UnoEngine {
     
     /**
      * This function checks that a card can be placed (same color or same number or same symbol)
-     * @param color - Color of the card to check
-     * @param value - Value of the card to check
+     * @param card - The card to check
      * @return true if the considered card can be placed, false otherwise
      */
-    public boolean canBePlaced(String color, int value){
-        return (value != 16 && (color.equals(currentColor) || value == currentValue || color.equals("")));
+    public boolean canBePlaced(Card card){
+        return (card.getValue() != 16 && (card.getColor().equals(currentColor) || card.getValue() == currentValue || card.getColor().equals("")));
     }
 
     
@@ -383,7 +382,7 @@ public class LocalUno extends UnoEngine {
             } else {
                 ArrayList<Card> possibility = new ArrayList<>();
                 for (Card card : allPlayers.get(currentPlayer)){
-                    if (canBePlaced(card.getColor(), card.getValue())){
+                    if (canBePlaced(card)){
                         possibility.add(card);
                     }
                 }
@@ -393,7 +392,7 @@ public class LocalUno extends UnoEngine {
                 } else {
                     allPlayers.get(currentPlayer).add(drawPile.get(0));
                     System.out.println("Joueur "+currentPlayer+" pioche 1 carte.");
-                    if (canBePlaced(drawPile.get(0).getColor(), drawPile.get(0).getValue())){
+                    if (canBePlaced(drawPile.get(0))){
                         placeACard(allPlayers.get(currentPlayer).size()-1, allPlayers.get(currentPlayer));
                     }
                     drawPile.remove(drawPile.get(0));
